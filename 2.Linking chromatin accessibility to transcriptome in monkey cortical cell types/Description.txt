@@ -1,0 +1,5 @@
+1) Batch effect correction and cell clustering of snRNA-seq cells
+2) Co-embedded the snRNA-seq and snATAC-seq data of cortical cells with Seurat V3
+3) Co-embedded the SMART-seq2/DNBelab C4 snRNA-seq of macaque brain cells with snRNA-seq data of human cortical cells with Seurat V3
+4) Transferring the cell type identification to epigenetic excitatory neurons 
+5) Analyzing TF binding sites enrichment and identify differentially enriched TF binding sites in stratified excitatory neurons by ChromVAR

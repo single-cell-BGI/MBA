@@ -1,0 +1,35 @@
+library(Seurat)
+library(ggplot2)
+library(sctransform)
+library(cowplot)
+library(dplyr)
+all_0909 <- readRDS("/hwfssz5/ST_PRECISION/TOMCAT/UCB_share/syn/macabrain/2009/0917/all_0909.rds")
+full <- readRDS("/hwfssz5/ST_PRECISION/TOMCAT/UCB_share/syn/macabrain/2009/0914/full.rds")
+all_0723 <- readRDS("/hwfssz5/ST_PRECISION/TOMCAT/UCB_share/syn/macabrain/2009/0917/all_0723.rds")
+
+all_ob.list <- list(full,all_0723,all_0909)
+all_ob.list <- lapply(X = all_ob.list, FUN = function(x) {
+  x <- SCTransform(x, verbose = FALSE)
+})
+all_ob.anchors <- FindIntegrationAnchors(object.list = all_ob.list, dims = 1:20)
+all_combined <- IntegrateData(anchorset = all_ob.anchors, dims = 1:20)
+DefaultAssay(all_combined) <- "integrated"
+all_combined <- ScaleData(all_combined, verbose = FALSE)
+all_combined <- RunPCA(all_combined, npcs = 30, verbose = FALSE)
+all_combined <- RunUMAP(all_combined, reduction = "pca", dims = 1:20)
+all_combined <- FindNeighbors(all_combined, reduction = "pca", dims = 1:20)
+all_combined <- FindClusters(all_combined, resolution = 0.5)
+
+saveRDS(all_combined,file = "/hwfssz5/ST_PRECISION/TOMCAT/UCB_share/syn/macabrain/2009/0917/all_sct_inte.rds")
+
+pdf("/hwfssz5/ST_PRECISION/TOMCAT/UCB_share/syn/macabrain/2009/0917/all_sct_cluster.pdf",height = 5,width = 10)
+p1 <- DimPlot(all_combined, reduction = "umap", group.by = "batch")
+p2 <- DimPlot(all_combined, reduction = "umap", label = TRUE)
+plot_grid(p1, p2)
+dev.off()
+DefaultAssay(all_combined) <- "RNA"
+marker<-c("SLC17A7","GAD1","RELN","VIP","LAMP5","PVALB","SST","MOG","PDGFRA","PDGFRB","APBB1IP","FLT1","SLC1A2")
+pdf("/hwfssz5/ST_PRECISION/TOMCAT/UCB_share/syn/macabrain/2009/0917/all_sct_inte_feature.pdf",height = 26, width =26)
+p3 <- FeaturePlot(all_combined, features = marker ,order = T)
+print(p3)
+dev.off()

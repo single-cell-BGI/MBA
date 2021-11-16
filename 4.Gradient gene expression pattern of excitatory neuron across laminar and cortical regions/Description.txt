@@ -1,0 +1,2 @@
+1) Gradient gene expression pattern analysis of excitatory neuron across laminar by Mfuzz
+2) Gradient gene expression pattern analysis of excitatory neuron across cortical regions by Mfuzz
