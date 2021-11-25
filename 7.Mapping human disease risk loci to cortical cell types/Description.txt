@@ -1,2 +1,0 @@
-1) Linkage disequilibrium score regression (LDSC) analysis using differential accessible peaks of each cell type/subtype in PFC, M1 and V1
-2) Map spatial enrichment of disease-affected genes in cortical cell type/subtype
